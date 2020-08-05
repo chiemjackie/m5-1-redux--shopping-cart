@@ -45,10 +45,4 @@ const ItemGridWrapper = styled.main`
   padding: 16px 64px;
 `;
 
-const CartWrapper = styled.div`
-  grid-area: sidebar;
-  border-left: 3px dashed #ff406e;
-  padding-left: 8px;
-`;
-
 export default App;

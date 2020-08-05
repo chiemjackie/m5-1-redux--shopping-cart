@@ -1,19 +1,36 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+
+import { removeItem, updateQuantity } from "../actions";
 
 import { AiOutlineClose } from "react-icons/ai";
 
-function CartItem() {
+function CartItem({ id, title, quantity }) {
+  const dispatch = useDispatch();
+
+  const handleQuantityChange = (event) => {
+    const quantity = event.target.value
+      ? event.target.value
+      : event.target.placeholder;
+
+    dispatch(updateQuantity({ id, title, quantity: Number(quantity) }));
+  };
+
   return (
     <Wrapper>
       <Item>
         <Top>
-          <h3>PRODUCT</h3>
-          <AiOutlineClose />
+          <h3>{title}</h3>
+          <CloseButton onClick={() => dispatch(removeItem({ id }))} />
         </Top>
         <Bottom>
           <span className="label">Quantity:</span>
-          <Quantity>#</Quantity>
+          <Quantity
+            type="number"
+            value={quantity}
+            onInput={handleQuantityChange}
+          />
         </Bottom>
       </Item>
     </Wrapper>
@@ -48,15 +65,33 @@ const Bottom = styled.div`
     color: lightgray;
     font-size: 18px;
   }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 `;
 
-const Quantity = styled.span`
+const Quantity = styled.input`
   margin-left: 15px;
-  padding: 0 5px;
   color: white;
+  background-color: transparent;
   font-weight: bold;
   font-size: 20px;
+  text-align: center;
+  border: none;
   border-bottom: 3px solid white;
+  width: 30px;
+  &::placeholder {
+    color: white;
+  }
+`;
+
+const CloseButton = styled(AiOutlineClose)`
+  cursor: pointer;
 `;
 
 export default CartItem;
